@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 // Start db
 const db = new Dexie('groceries');
 db.version(1).stores({
-    items: '++id'
+    items: "++id"
 });
 
 
