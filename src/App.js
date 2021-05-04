@@ -11,7 +11,6 @@ db.version(1).stores({
     items: "++id"
 });
 
-
 function App() {
   const [showAddItem, setShowAddItem] = useState(false)
   const [items, setItems] = useState([])
@@ -25,6 +24,19 @@ function App() {
     getItems()
   }, [])
 
+
+  const isDefined = (variable) => {
+    if(!variable){
+      console.log("Error: undefined object")
+      return false
+    }
+    return true
+  }
+
+  const getSorted = async () => {
+    const data = await db.items
+  }
+
   const fetchItems = async () => {
     const data = await db.items.toArray()
 
@@ -32,6 +44,8 @@ function App() {
   }
 
   const fetchItem = async (id) => {
+    // fail with logged output
+    if(!isDefined(id)) return
     const data = await db.items.get(id)
 
     return data
@@ -45,6 +59,8 @@ function App() {
   }
 
   const deleteItem = async (id) => {
+    if(!isDefined(id)) return
+
     await db.items.delete(id)
 
     setItems(items.filter( (item) => item.id !== id))
@@ -52,6 +68,8 @@ function App() {
 
   const toggleImportant = async (id) => {
     const itemToToggle = await fetchItem(id)
+    if(!isDefined(itemToToggle)) return
+
     await db.items.update( itemToToggle.id, {important: !itemToToggle.important})
 
     setItems(items.map((item) => item.id === id ? 
