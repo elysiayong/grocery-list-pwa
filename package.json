@@ -31,7 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-prebuild": "npm i -f",
+    "heroku-prebuild": "npm i fsevents@latest -f --save-optional",
     "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {

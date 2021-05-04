@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const AddItem = ({ onAdd }) => {
+    const [errmsg, setErrMsg] = useState('') 
     const [item, setItem] = useState('')
     const [quantity, setQuantity] = useState(1)
     const [important, setImportance] = useState('')
@@ -9,11 +10,12 @@ const AddItem = ({ onAdd }) => {
         e.preventDefault()
 
         if(!item){
-            alert('Add task')
-            return
+            setErrMsg('Please input an item')
+            return  
         }
 
         onAdd({ item, quantity, important })
+        setErrMsg('')
         setItem('')
         setQuantity(1)
         setImportance(false)
@@ -28,12 +30,15 @@ const AddItem = ({ onAdd }) => {
                 </label>
                 <input type='text' placeholder='Add Item' 
                 value={item} onChange={(e) => { setItem(e.target.value) }}/>
+                <span style={{color: 'red'}}> {errmsg} </span>
             </div>
             <div className='form-control'>
                 <label>
                     Quantity
                 </label>
-                <input type='number' defaultValue={1} onChange={(e) => { setQuantity(e.target.valueAsNumber) }}/>
+                <input type='number' defaultValue={1} onChange={(e) => { 
+                    e.target.valueAsNumber ? setQuantity(e.target.valueAsNumber) : setQuantity(1)
+                    }}/>
             </div>
             <div className='form-control'>
                 <label>
