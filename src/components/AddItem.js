@@ -37,7 +37,7 @@ const AddItem = ({ onAdd }) => {
                     Quantity
                 </label>
                 <input type='number' defaultValue={1} onChange={(e) => { 
-                    e.target.valueAsNumber ? setQuantity(e.target.valueAsNumber) : setQuantity(1)
+                    setQuantity(!e.target.valueAsNumber ? 1 : e.target.valueAsNumber)
                     }}/>
             </div>
             <div className='form-control'>
@@ -48,7 +48,7 @@ const AddItem = ({ onAdd }) => {
                     type='checkbox'
                     value={important === "" ? false : true} 
                     onChange={(e) => { 
-                        setImportance(e.currentTarget.checked) 
+                        setImportance(!e.currentTarget.checked ? false : true) 
                     }}
                     checked={important}
                     />
