@@ -27,7 +27,8 @@ function App() {
   const [selections, setSelections] = useState([
     "None",
     "S2",
-    "S3"
+    "S3",
+    "F4"
   ])
   const [items, setItems] = useState([])
 
@@ -95,8 +96,8 @@ function App() {
   return (
     <div className="container">
       <Header title="Grocery List" onAdd={() => setShowAddItem(!showAddItem)} showAdd={showAddItem} />
-      <DropDown text={"Filter: "} selected={selected} selections={selections} onToggle={toggleFilter}/>
       {showAddItem && <AddItem selections={selections} onAdd={addItem}/>}
+      <DropDown text={"Filter: "} selected={selected} selections={selections} onToggle={toggleFilter}/>
       { 
         items.length > 0 ?
         (<Items items={items} 
