@@ -18,7 +18,6 @@ db.version(2).stores({
     return trans.items.toCollection().modify ( item => {
         item.category = item.category ? item.category : "None";
     });
-
 });
 
 
@@ -40,10 +39,6 @@ function App() {
 
     getItems()
   }, [])
-
-  const updateDB = (data) => {
-
-  }
 
   const isDefined = (variable) => {
     if(!variable){
@@ -71,9 +66,7 @@ function App() {
     if(!isDefined(item)) return
 
     await db.items.add(item)
-    const data = await fetchItems()
-
-    setItems(data)
+    await toggleFilter(selected)
   }
 
   const deleteItem = async (id) => {
@@ -88,11 +81,9 @@ function App() {
     if(!isDefined(itemToToggle)) return
 
     await db.items.update( itemToToggle.id, {important: !itemToToggle.important})
-    const data = await fetchItems()
-
-    setItems(data)
+    await toggleFilter(selected);
   }
-
+  
   const toggleFilter = async (selection) => {    
     setSelected(selection)
     const data = await fetchItems()
@@ -106,7 +97,7 @@ function App() {
       <Header title="Grocery List" onAdd={() => setShowAddItem(!showAddItem)} showAdd={showAddItem} />
       <DropDown text={"Filter: "} selected={selected} selections={selections} onToggle={toggleFilter}/>
       {showAddItem && <AddItem selections={selections} onAdd={addItem}/>}
-      {
+      { 
         items.length > 0 ?
         (<Items items={items} 
           onDelete={deleteItem} 
