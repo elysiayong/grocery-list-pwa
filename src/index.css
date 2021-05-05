@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+html, body {
+  height: 100vh;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -14,7 +18,7 @@ body {
   max-width: 500px;
   margin: 30px auto;
   overflow: auto;
-  min-height: 300px;
+  min-height: 90vh;
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 5px;
