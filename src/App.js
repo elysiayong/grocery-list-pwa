@@ -1,5 +1,6 @@
 import './App.css';
 import Header from './components/Header'
+import DropDown from './components/DropDown'
 import Items from './components/Items'
 import AddItem from './components/AddItem'
 import Dexie from 'dexie';
@@ -13,10 +14,22 @@ db.version(1).stores({
 
 db.version(2).stores({
     items: "++id,important"
+}).upgrade (trans => {
+    return trans.items.toCollection().modify ( item => {
+        item.category = item.category ? item.category : "None";
+    });
 });
+
 
 function App() {
   const [showAddItem, setShowAddItem] = useState(false)
+  const [selected, setSelected] = useState('None') 
+  const [selections, setSelections] = useState([
+    "None",
+    "S2",
+    "S3",
+    "F4"
+  ])
   const [items, setItems] = useState([])
 
   useEffect(() => {
@@ -27,7 +40,6 @@ function App() {
 
     getItems()
   }, [])
-
 
   const isDefined = (variable) => {
     if(!variable){
@@ -53,11 +65,9 @@ function App() {
 
   const addItem = async (item) => {
     if(!isDefined(item)) return
-
+    
     await db.items.add(item)
-    const data = await fetchItems()
-
-    setItems(data)
+    await toggleFilter(selected)
   }
 
   const deleteItem = async (id) => {
@@ -72,16 +82,24 @@ function App() {
     if(!isDefined(itemToToggle)) return
 
     await db.items.update( itemToToggle.id, {important: !itemToToggle.important})
+    await toggleFilter(selected);
+  }
+  
+  const toggleFilter = async (selection) => {    
+    setSelected(selection)
     const data = await fetchItems()
+    selection === 'None' ? 
+    setItems(data) :
+    setItems(data.filter( (item) => item.category === selection))
 
-    setItems(data)
   }
 
   return (
     <div className="container">
       <Header title="Grocery List" onAdd={() => setShowAddItem(!showAddItem)} showAdd={showAddItem} />
-      {showAddItem && <AddItem onAdd={addItem}/>}
-      {
+      {showAddItem && <AddItem selections={selections} onAdd={addItem}/>}
+      <DropDown text={"Filter: "} selected={selected} selections={selections} onToggle={toggleFilter}/>
+      { 
         items.length > 0 ?
         (<Items items={items} 
           onDelete={deleteItem} 
