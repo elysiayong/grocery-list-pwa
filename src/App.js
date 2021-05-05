@@ -70,7 +70,7 @@ function App() {
 
   const addItem = async (item) => {
     if(!isDefined(item)) return
-
+    
     await db.items.add(item)
     await toggleFilter(selected)
   }
@@ -96,6 +96,7 @@ function App() {
     selection === 'None' ? 
     setItems(data) :
     setItems(data.filter( (item) => item.category === selection))
+    
   }
 
   return (
