@@ -1,23 +1,27 @@
 import { useState } from 'react'
+import DropDown from './DropDown'
 
-const AddItem = ({ onAdd }) => {
+const AddItem = ({ selections, onAdd }) => {
     const [errmsg, setErrMsg] = useState('') 
     const [item, setItem] = useState('')
     const [quantity, setQuantity] = useState(1)
     const [important, setImportance] = useState('')
+    const [category, setCategory] = useState('None')
 
     const onSubmit = (e) => {
         e.preventDefault()
-
+        
         if(!item){
             setErrMsg('Please input an item')
             return  
         }
+        
 
-        onAdd({ item, quantity, important })
+        onAdd({ item, quantity, important, category })
         setErrMsg('')
         setItem('')
         setQuantity(1)
+        setCategory('None')
         setImportance(false)
 
     }
@@ -39,6 +43,12 @@ const AddItem = ({ onAdd }) => {
                 <input type='number' defaultValue={1} onChange={(e) => { 
                     setQuantity(!e.target.valueAsNumber ? 1 : e.target.valueAsNumber)
                     }}/>
+            </div>
+            <div className='form-control'>
+                <label>
+                    Category
+                </label>
+                <DropDown selected={category} selections={selections} onToggle={ (selected) => { setCategory(selected) }}/>
             </div>
             <div className='form-control'>
                 <label>

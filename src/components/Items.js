@@ -9,6 +9,7 @@ const Items = ({items, onDelete, onToggle}) => {
                     id={item.id}
                     item={item.item}
                     important={item.important}
+                    category={item.category}
                     quantity={item.quantity}
                     onDelete={onDelete}
                     onToggle={onToggle}

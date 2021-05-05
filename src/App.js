@@ -1,5 +1,6 @@
 import './App.css';
 import Header from './components/Header'
+import DropDown from './components/DropDown'
 import Items from './components/Items'
 import AddItem from './components/AddItem'
 import Dexie from 'dexie';
@@ -13,10 +14,22 @@ db.version(1).stores({
 
 db.version(2).stores({
     items: "++id,important"
+}).upgrade (trans => {
+    return trans.items.toCollection().modify ( item => {
+        item.category = item.category ? item.category : "None";
+    });
+
 });
+
 
 function App() {
   const [showAddItem, setShowAddItem] = useState(false)
+  const [selected, setSelected] = useState('None') 
+  const [selections, setSelections] = useState([
+    "None",
+    "S2",
+    "S3"
+  ])
   const [items, setItems] = useState([])
 
   useEffect(() => {
@@ -28,6 +41,9 @@ function App() {
     getItems()
   }, [])
 
+  const updateDB = (data) => {
+
+  }
 
   const isDefined = (variable) => {
     if(!variable){
@@ -77,10 +93,19 @@ function App() {
     setItems(data)
   }
 
+  const toggleFilter = async (selection) => {    
+    setSelected(selection)
+    const data = await fetchItems()
+    selection === 'None' ? 
+    setItems(data) :
+    setItems(data.filter( (item) => item.category === selection))
+  }
+
   return (
     <div className="container">
       <Header title="Grocery List" onAdd={() => setShowAddItem(!showAddItem)} showAdd={showAddItem} />
-      {showAddItem && <AddItem onAdd={addItem}/>}
+      <DropDown text={"Filter: "} selected={selected} selections={selections} onToggle={toggleFilter}/>
+      {showAddItem && <AddItem selections={selections} onAdd={addItem}/>}
       {
         items.length > 0 ?
         (<Items items={items} 

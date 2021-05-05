@@ -1,6 +1,6 @@
 import { FaTimes } from 'react-icons/fa'
 
-const Item = ({ id, item, important, quantity, onDelete, onToggle}) => {
+const Item = ({ id, item, important, quantity, category, onDelete, onToggle}) => {
     return (
         <div className={`item ${important ? 'important' : ''}`} 
         onDoubleClick={ () => onToggle(id)}>
@@ -10,7 +10,8 @@ const Item = ({ id, item, important, quantity, onDelete, onToggle}) => {
                     style={{ color: 'red', cursor: 'pointer'}} 
                     onClick={ () => onDelete(id)}/>
             </h3>
-            <p> {"Amount: " + quantity} </p>  
+            { category !== 'None' ? <p> {category} </p> : ''}
+            <p> {"Amount: " + quantity} </p>
         </div>
     )
 }
