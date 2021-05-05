@@ -26,9 +26,14 @@ function App() {
   const [selected, setSelected] = useState('None') 
   const [selections, setSelections] = useState([
     "None",
-    "S2",
-    "S3",
-    "F4"
+    "Grains & Pasta",
+    "Fruits",
+    "Vegetables",
+    "Meat & Seafood",
+    "Bread & Pastry",
+    "Cleaning Supplies",
+    "Healthcare",
+    "Other"
   ])
   const [items, setItems] = useState([])
 
@@ -91,7 +96,7 @@ function App() {
     selection === 'None' ? 
     setItems(data) :
     setItems(data.filter( (item) => item.category === selection))
-
+    
   }
 
   return (
