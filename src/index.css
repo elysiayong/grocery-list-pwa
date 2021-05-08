@@ -125,22 +125,23 @@ footer {
 }
 
 .dd-wrapper {
-  display: flex;
+  /* display: flex; */
   margin: auto;
   width: 50%;
   justify-content: center;
+  text-align: center;
   position: relative;
   padding: 0px 0px 15px 0px;
 }
 
 .dd-list {
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: absolute;
+  width: 100%;
   background-color: #f9f9f9;
-  min-width: 160px;
-  margin: 40px;
-  padding: 10px 20px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 5% 5%;
+  box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 20%);
   z-index: 1;
 }
 
