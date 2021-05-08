@@ -15,6 +15,10 @@ const AddItem = ({ selections, onAdd }) => {
             setErrMsg('Please input an item')
             return  
         }
+        // if(item.length > 50){
+        //     setErrMsg('Item description too long! Maximum 50 characters')
+        //     return
+        // }
         
 
         onAdd({ item, quantity, important, category })

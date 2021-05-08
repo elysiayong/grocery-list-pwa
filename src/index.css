@@ -63,16 +63,25 @@ body {
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
+  min-width: 0;
+  width: auto;
 }
 
 .item.important {
   border-left: 5px solid green;
 }
 
-.item h3 {
+.item span {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: auto ;
+}
+
+.item h3 {
+  max-width: 90%;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .add-form {
