@@ -3,6 +3,7 @@ import Header from './components/Header'
 import DropDown from './components/DropDown'
 import Items from './components/Items'
 import AddItem from './components/AddItem'
+import EditItem from './components/EditItem'
 import Dexie from 'dexie';
 import { useState, useEffect } from 'react';
 
@@ -24,7 +25,9 @@ db.version(2).stores({
 function App() {
   const [showAddItem, setShowAddItem] = useState(false)
   const [selected, setSelected] = useState('None') 
-  const [selections, setSelections] = useState([
+  const [showEditItem, setShowEditItem] = useState(false)
+  const [currentItem, setCurrentItem] = useState(null)
+  const selections = [
     "None",
     "Grains & Pasta",
     "Fruits",
@@ -34,7 +37,7 @@ function App() {
     "Cleaning Supplies",
     "Healthcare",
     "Other"
-  ])
+  ]
   const [items, setItems] = useState([])
 
   useEffect(() => {
@@ -75,6 +78,18 @@ function App() {
     await toggleFilter(selected)
   }
 
+  const editItem = async (itemToEdit) => {
+    if(!isDefined(itemToEdit)) return
+
+    await db.items.update( itemToEdit.id, {
+      item: itemToEdit.item,
+      quantity: itemToEdit.quantity,
+      category: itemToEdit.category,
+      important: itemToEdit.important
+    })
+    await toggleFilter(selected);
+  }
+
   const deleteItem = async (id) => {
     if(!isDefined(id)) return
     await db.items.delete(id)
@@ -99,8 +114,19 @@ function App() {
     
   }
 
+  const toggleEdit = async (id) => {
+    // get item info from db
+    const item = await fetchItem(id)
+    if(!isDefined(item)) return
+
+    setCurrentItem(item)
+    setShowEditItem(!showEditItem)
+
+  }
+
   return (
     <div className="container">
+      {showEditItem && <EditItem selections={selections} currItem={currentItem} onEdit={editItem} onClose={ () => setShowEditItem(!showEditItem) } />}
       <Header title="Grocery List" onAdd={() => setShowAddItem(!showAddItem)} showAdd={showAddItem} />
       {showAddItem && <AddItem selections={selections} onAdd={addItem}/>}
       <DropDown text={"Filter: "} selected={selected} selections={selections} onToggle={toggleFilter}/>
@@ -109,6 +135,7 @@ function App() {
         (<Items items={items} 
           onDelete={deleteItem} 
           onToggle={toggleImportant}
+          showEdit={toggleEdit}
           />)
         : ('No things to buy')
       }

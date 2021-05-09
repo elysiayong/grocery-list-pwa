@@ -119,6 +119,36 @@ body {
   height: 20px;
 }
 
+.edit-form {
+  position: absolute;
+  z-index: 1;
+  margin: auto;
+  min-width: 0;
+  max-width: 85%;
+  width: 100%;
+  color: black;
+  padding: 5%;
+  background-color: rgba(255, 255, 255, 1);
+  border: 3px  solid black;
+  border-radius: 5px;
+}
+
+@media only screen and (min-width: 540px){
+  .edit-form { 
+    margin: 0% 0% 0% -1%;
+    min-width: 0;
+    max-width: 450px;
+    width: 100%;
+  }
+
+}
+
+.edit-form h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 footer {
   margin-top: 30px;
   text-align: center;

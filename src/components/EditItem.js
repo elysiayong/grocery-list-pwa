@@ -1,23 +1,26 @@
 import { useState } from 'react'
 import DropDown from './DropDown'
+import Button from './Button'
 
-const AddItem = ({ selections, onAdd }) => {
+const EditItem = ({ selections, currItem, onEdit, onClose}) => {
     const [errmsg, setErrMsg] = useState('') 
-    const [item, setItem] = useState('')
-    const [quantity, setQuantity] = useState(1)
-    const [important, setImportance] = useState('')
-    const [category, setCategory] = useState('None')
+    var id = currItem ? currItem.id : null
+    const [item, setItem] = useState(currItem ? currItem.item : '')
+    const [quantity, setQuantity] = useState(currItem ? currItem.quantity : 1)
+    const [important, setImportance] = useState(currItem ? currItem.important : false)
+    const [category, setCategory] = useState(currItem ? currItem.category : 'None')
 
     const onSubmit = (e) => {
         e.preventDefault()
-        
+        onClosingForm(e)
+
         if(!item){
             setErrMsg('Please input an item')
             return  
         }
-
-        onAdd({ item, quantity, important, category })
+        onEdit({ id, item, quantity, important, category })
         setErrMsg('')
+        id = null
         setItem('')
         setQuantity(1)
         setCategory('None')
@@ -25,8 +28,17 @@ const AddItem = ({ selections, onAdd }) => {
 
     }
 
+    const onClosingForm = (e) => {
+        e.preventDefault()
+        onClose() 
+    }
+
+
     return (
-        <form className='add-form' onSubmit={onSubmit}> 
+        <form className='edit-form' onSubmit={onSubmit}> 
+            <h2> 
+                {'Edit Item'} <Button color='red' text='Cancel' onClick={onClosingForm}/>
+            </h2> 
             <div className='form-control'>
                 <label>
                     Item
@@ -39,7 +51,7 @@ const AddItem = ({ selections, onAdd }) => {
                 <label>
                     Quantity
                 </label>
-                <input type='number' defaultValue={1} onChange={(e) => { 
+                <input type='number' defaultValue={quantity} onChange={(e) => { 
                     setQuantity(!e.target.valueAsNumber ? 1 : e.target.valueAsNumber)
                     }}/>
             </div>
@@ -68,4 +80,4 @@ const AddItem = ({ selections, onAdd }) => {
 }
 
 
-export default AddItem
+export default EditItem
