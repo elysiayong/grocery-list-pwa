@@ -1,6 +1,6 @@
 import Item from './Item'
 
-const Items = ({items, onDelete, onToggle}) => {
+const Items = ({items, onDelete, onToggle, showEdit}) => {
     return (
         <>
             {items.map((item, index) => (
@@ -13,6 +13,7 @@ const Items = ({items, onDelete, onToggle}) => {
                     quantity={item.quantity}
                     onDelete={onDelete}
                     onToggle={onToggle}
+                    showEdit={showEdit}
                 />
             ))}
         </>
