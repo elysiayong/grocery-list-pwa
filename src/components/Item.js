@@ -9,7 +9,7 @@ const Item = ({ id, item, important, quantity, category, onDelete, onToggle, sho
 
     return (
         <ClickNHold
-            time={0.25}
+            time={0.5}
             onClickNHold={end}>
             <div className={`item ${important ? 'important' : ''}`} 
             onDoubleClick={ () => onToggle(id)}>
